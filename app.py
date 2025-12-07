@@ -61,7 +61,7 @@ def get_gemini_response(user_message):
             return "Error: Gemini API Key not found."
 
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-2.5-flash")
 
         chat = model.start_chat(history=[
             {"role": "user", "parts": ["You're a helpful diabetes assistant."]}
