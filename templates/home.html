@@ -102,16 +102,18 @@
       white-space: nowrap;
       overflow: hidden;
       display: block;
-      width: 100%;
+      width: 100vw;
       box-sizing: border-box;
-      animation: slideLeft 12s linear infinite;
+      animation: slideLeft 20s linear infinite;
       font-size: 1.5rem;
       color: #bfdbfe; /* Tailwind blue-300 */
+      padding-left: 100vw;
+      will-change: transform;
     }
 
     @keyframes slideLeft {
       0% {
-        transform: translateX(100%);
+        transform: translateX(0);
       }
       100% {
         transform: translateX(-100%);
@@ -175,16 +177,20 @@
 
   <!-- Footer -->
   <footer class="bg-blue-900 text-blue-300 p-8">
-    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
 
-      <!-- About Me Section with sliding text -->
-      <div class="md:w-2/4 text-center md:text-left flex items-center justify-center md:justify-start gap-4 h-16 overflow-hidden relative">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+      <!-- About Me Section with sliding text (stacked vertically) -->
+      <div class="md:w-2/4 text-center md:text-left flex flex-col items-center md:items-start justify-center md:justify-start gap-2 py-2">
         <h2 class="text-white text-4xl font-semibold mb-0 whitespace-nowrap">Anshika Singh</h2>
-        <span id="slide-text"></span>
+        <div class="mt-0 text-blue-200 text-lg font-normal text-center md:text-left">
+          <div>Passionate about healthcare and AI.</div>
+          <div>I build smart solutions to help people manage diabetes better.</div>
+          <div>Dedicated to using technology for meaningful impact.</div>
+        </div>
       </div>
 
       <!-- LinkedIn Link -->
-      <div class="md:w-1/4 flex flex-col items-center md:items-end space-y-2">
+      <div class="md:w-1/4 flex flex-col items-center md:items-end space-y-2 mt-4 md:mt-0">
         <h2 class="text-white text-xl font-semibold mb-2">Connect with me</h2>
         <a 
           href="https://www.linkedin.com/in/anshika-singh-031b132a5/" 
@@ -212,22 +218,7 @@
     </p>
   </footer>
 
-  <!-- Slideshow Script -->
-  <script>
-    const texts = [
-      "Passionate about healthcare and AI.   ",
-      "I build smart solutions to help people manage diabetes better.   ",
-      "Dedicated to using technology for meaningful impact.   "
-    ];
-
-    const slideText = document.getElementById("slide-text");
-
-    let combinedText = texts.join(" • "); // Joining texts with separator for continuous marquee
-
-    slideText.textContent = combinedText;
-
-    // Note: CSS animation handles continuous scrolling effect
-  </script>
+  <!-- No script needed for static description lines -->
 
 </body>
 </html>
