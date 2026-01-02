@@ -443,8 +443,10 @@ def process_post_notifications(post):
                 'mention',
                 f"@{author_username} mentioned you in a post",
                 post_id
+            post_id
             )
             logging.info(f"Created mention notification for {mentioned_user}")
+            user = users[mentioned_user]
             if user.get('preferences', {}).get('email_mentions', True):
                 send_email_notification(
                     user['email'],
