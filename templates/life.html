@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Personalized Lifestyle Plan</title>
+  <title>{{ _('Personalized Lifestyle Plan') }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* --- Navbar Improvement Section --- */
@@ -89,40 +90,22 @@
     }
   </style>
 </head>
+
 <body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex flex-col">
-  
-  <header class="navbar">
-    <div class="navbar-inner">
-      <h1 class="navbar-title">🩺 Diabetes Care</h1>
-      <nav>
-        <ul class="navbar-links">
-          <li><a href="/index">Prediction</a></li>
-          <li><a href="/life">Lifestyle Check</a></li>
-          <li><a href="/chatbot">Chatbot</a></li>
-          <li><a href="/explore">Explore Data</a></li>
-          <li><a href="/forum">Forum</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+
+  {% include 'navbar.html' %}
 
   <main class="flex-grow flex items-center justify-center p-6">
     <div class="max-w-2xl w-full bg-white/30 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20">
-      <h2 class="text-3xl font-extrabold mb-6 text-center text-blue-800 tracking-wide">🌿 Personalized Lifestyle Plan</h2>
+      <h2 class="text-3xl font-extrabold mb-6 text-center text-blue-800 tracking-wide">🌿 Personalized Lifestyle Plan
+      </h2>
 
       <form id="planForm" class="space-y-5">
         <div>
           <label for="age" class="block font-semibold mb-1 text-gray-700">Age</label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            min="1"
-            max="120"
-            placeholder="Enter your age"
+          <input type="number" id="age" name="age" min="1" max="120" placeholder="Enter your age"
             class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-            required
-          />
+            required />
         </div>
 
         <div class="grid grid-cols-2 gap-4">
@@ -165,12 +148,9 @@
 
         <div>
           <label for="activity" class="block font-semibold mb-1 text-gray-700">Physical Activity Level</label>
-          <select
-            id="activity"
-            name="activity"
+          <select id="activity" name="activity"
             class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-            required
-          >
+            required>
             <option value="" disabled selected>Select activity level</option>
             <option value="low">Low (Sedentary)</option>
             <option value="moderate">Moderate (3-5 days/week)</option>
@@ -178,11 +158,8 @@
           </select>
         </div>
 
-        <button
-          type="submit"
-          id="submitBtn"
-          class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2"
-        >
+        <button type="submit" id="submitBtn"
+          class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2">
           <span id="btnText">🔍 Generate Plan</span>
           <span id="btnSpinner" class="loading-spinner hidden"></span>
         </button>
@@ -223,13 +200,14 @@
       diet: '🍽️', exercise: '🏃', stress: '🧘', sleep: '😴', monitoring: '📊'
     };
 
+    const categoryIcons = { diet: '', exercise: '', stress: '', sleep: '', monitoring: '' };
     const categoryTitles = {
       diet: 'Diet & Nutrition', exercise: 'Exercise & Activity', stress: 'Stress Management', sleep: 'Sleep & Recovery', monitoring: 'Health Monitoring'
     };
 
     function setLoading(loading) {
       submitBtn.disabled = loading;
-      btnText.textContent = loading ? 'Generating...' : '🔍 Generate Plan';
+      btnText.textContent = loading ? GENERATING_TEXT : GENERATE_TEXT;
       btnSpinner.classList.toggle('hidden', !loading);
       submitBtn.classList.toggle('opacity-75', loading);
     }
@@ -238,16 +216,16 @@
       const { plan, profile, source } = data;
       let profileHtml = `
         <div class="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-          <h3 class="text-lg font-semibold text-blue-800 mb-2">📋 Your Profile</h3>
+          <h3 class="text-lg font-semibold text-blue-800 mb-2">{{ _('Your Profile') }}</h3>
           <div class="grid grid-cols-3 gap-4 text-sm">
-            <div><span class="text-gray-600">Age:</span> <strong>${profile.age}</strong> (${profile.age_group})</div>
-            <div><span class="text-gray-600">BMI:</span> <strong>${profile.bmi}</strong> (${profile.bmi_category})</div>
-            <div><span class="text-gray-600">Activity:</span> <strong class="capitalize">${profile.activity}</strong></div>
+            <div><span class="text-gray-600">{{ _('Age') }}:</span> <strong>${profile.age}</strong> (${profile.age_group})</div>
+            <div><span class="text-gray-600">{{ _('BMI') }}:</span> <strong>${profile.bmi}</strong> (${profile.bmi_category})</div>
+            <div><span class="text-gray-600">{{ _('Activity') }}:</span> <strong class="capitalize">${profile.activity}</strong></div>
           </div>
         </div>
       `;
 
-      let planHtml = '<h3 class="text-2xl font-semibold mb-4 text-blue-700">🧠 Your Custom Lifestyle Plan</h3>';
+      let planHtml = '<h3 class="text-2xl font-semibold mb-4 text-blue-700">{{ _("Your Custom Lifestyle Plan") }}</h3>';
       planHtml += '<div class="grid gap-4">';
 
       for (const [category, tips] of Object.entries(plan)) {
@@ -259,7 +237,7 @@
                 <h4 class="font-semibold text-gray-800">${categoryTitles[category] || category}</h4>
               </div>
               <ul class="space-y-2">
-                ${tips.map(tip => `<li class="flex items-start gap-2 text-gray-700"><span class="text-green-500 mt-1">✓</span><span>${tip}</span></li>`).join('')}
+                ${tips.map(tip => `<li class="flex items-start gap-2 text-gray-700"><span class="text-green-500 mt-1">*</span><span>${tip}</span></li>`).join('')}
               </ul>
             </div>
           `;
@@ -284,11 +262,7 @@
 
       setLoading(true);
 
-      const formData = {
-        age: form.age.value,
-        bmi: form.bmi.value,
-        activity: form.activity.value
-      };
+      const formData = { age: form.age.value, bmi: form.bmi.value, activity: form.activity.value };
 
       try {
         const response = await fetch('/api/lifestyle-plan', {
@@ -309,6 +283,26 @@
         setLoading(false);
       }
     });
+
+    // Language selector
+    document.getElementById('lang-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('lang-dropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', function() {
+      document.getElementById('lang-dropdown').classList.remove('show');
+    });
+    function setLanguage(langCode) {
+      fetch('/api/set-language', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: langCode })
+      })
+      .then(response => response.json())
+      .then(data => { if (data.success) window.location.reload(); })
+      .catch(err => console.error('Language switch failed:', err));
+    }
   </script>
 </body>
+
 </html>

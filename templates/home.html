@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Diabetes Care Home</title>
+  <title>{{ _('Diabetes Care Home') }}</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!--
-    Layout fix contribution by Mohammed Fahad Kasim
-    - Reduced unused white space on large screens
-    - Centered main content using max-width containers
-    - Improved responsiveness without altering design or features
-  -->
 
   <style>
     /* 3D Text Effect */
@@ -27,22 +21,35 @@
       transform-style: preserve-3d;
       animation: textFloat 3s ease-in-out infinite alternate;
     }
+
     @keyframes textFloat {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-8px); }
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(-8px);
+      }
     }
 
     .animate-scale-up {
       animation: scaleUp 2.5s ease-in-out infinite alternate;
     }
+
     @keyframes scaleUp {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.1); }
+      0% {
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(1.1);
+      }
     }
 
     .btn-3d {
       transition: transform 0.3s ease;
     }
+
     .btn-3d:hover {
       transform: translateY(-3px);
       box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
@@ -51,8 +58,20 @@
     .floating-img {
       animation: floatUpDown 4s ease-in-out infinite;
     }
+
     @keyframes floatUpDown {
-      50% { transform: translateY(-15px); }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+    
+    .lang-dropdown {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+    }
+    .lang-dropdown.show {
+      max-height: 300px;
     }
   </style>
 </head>
@@ -60,25 +79,7 @@
 <body class="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-800">
 
   <!-- Header -->
-  <header class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
-      <h1 class="text-4xl font-extrabold text-3d hover:scale-[1.03] transition-transform duration-300">
-        <a href="/" class="flex items-center gap-3 cursor-pointer no-underline">
-        🩺 Diabetes Care
-        </a>
-      </h1>
-      <nav>
-        <ul class="flex space-x-6 text-lg font-semibold">
-          <li><a href="/" class="hover:text-blue-300">Home</a></li>
-          <li><a href="/index" class="hover:text-blue-300">Prediction</a></li>
-          <li><a href="/life" class="hover:text-blue-300">Lifestyle Check</a></li>
-          <li><a href="/chatbot" class="hover:text-blue-300">Chatbot</a></li>
-          <li><a href="/explore" class="hover:text-blue-300">Explore Data</a></li>
-          <li><a href="/forum" class="hover:text-blue-300">Forum</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  {% include 'navbar.html' %}
 
   <!-- Hero Section -->
   <main class="flex-grow bg-gradient-to-br from-blue-200 to-white px-6 py-24">
@@ -86,25 +87,24 @@
 
       <!-- Image -->
       <div class="max-w-xl floating-img">
-        <img src="/static/doctor.png" alt="Doctor illustration" class="w-full h-auto" />
+        <img src="/static/doctor.png" alt="{{ _('Doctor illustration') }}" class="w-full h-auto" />
       </div>
 
       <!-- Text -->
       <div class="max-w-xl text-center md:text-left">
         <h2 class="text-6xl font-extrabold mb-6 text-3d animate-scale-up">
-          Welcome to <span class="text-blue-800">Diabetes Care</span>
+          {{ _('Welcome to') }} <span class="text-blue-800">{{ _('Diabetes Care') }}</span>
         </h2>
         <p class="text-xl text-gray-700 mb-10">
-          Your one-stop solution for prediction, lifestyle advice, AI-powered chatbot,
-          and real-time health data insights.
+          {{ _('Your one-stop solution for prediction, lifestyle advice, AI-powered chatbot, and real-time health data insights.') }}
         </p>
 
         <div class="flex flex-wrap justify-center md:justify-start gap-4">
-          <a href="/index" class="btn-3d bg-blue-700 text-white px-8 py-3 rounded-lg">Prediction</a>
-          <a href="/life" class="btn-3d bg-green-700 text-white px-8 py-3 rounded-lg">Lifestyle</a>
-          <a href="/chatbot" class="btn-3d bg-purple-700 text-white px-8 py-3 rounded-lg">Chatbot</a>
-          <a href="/explore" class="btn-3d bg-indigo-700 text-white px-8 py-3 rounded-lg">Explore</a>
-          <a href="/forum" class="btn-3d bg-red-700 text-white px-8 py-3 rounded-lg">Forum</a>
+          <a href="/index" class="btn-3d bg-blue-700 text-white px-8 py-3 rounded-lg">{{ _('Prediction') }}</a>
+          <a href="/life" class="btn-3d bg-green-700 text-white px-8 py-3 rounded-lg">{{ _('Lifestyle') }}</a>
+          <a href="/chatbot" class="btn-3d bg-purple-700 text-white px-8 py-3 rounded-lg">{{ _('Chatbot') }}</a>
+          <a href="/explore" class="btn-3d bg-indigo-700 text-white px-8 py-3 rounded-lg">{{ _('Explore') }}</a>
+          <a href="/forum" class="btn-3d bg-red-700 text-white px-8 py-3 rounded-lg">{{ _('Forum') }}</a>
         </div>
       </div>
 
@@ -118,18 +118,15 @@
       <div class="text-center md:text-left max-w-md">
         <h2 class="text-white text-3xl font-semibold">Anshika Singh</h2>
         <p class="mt-2 text-blue-200">
-          Passionate about healthcare and AI.<br>
-          Building smart solutions for meaningful impact.
+          {{ _('Passionate about healthcare and AI.') }}<br>
+          {{ _('Building smart solutions for meaningful impact.') }}
         </p>
       </div>
 
       <div class="text-center md:text-right">
         <h3 class="text-white text-xl mb-2">Connect with me</h3>
-        <a
-          href="https://www.linkedin.com/in/anshika-singh-031b132a5/"
-          target="_blank"
-          class="text-blue-300 hover:text-blue-400"
-        >
+        <a href="https://www.linkedin.com/in/anshika-singh-031b132a5/" target="_blank"
+          class="text-blue-300 hover:text-blue-400">
           LinkedIn
         </a>
       </div>
@@ -137,9 +134,39 @@
     </div>
 
     <p class="mt-8 text-center text-sm text-blue-400">
-      © 2025 Diabetes Care Platform
+      2025 {{ _('Diabetes Care Platform') }}
     </p>
   </footer>
 
+  <script>
+    // Toggle language dropdown
+    document.getElementById('lang-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('lang-dropdown').classList.toggle('show');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      document.getElementById('lang-dropdown').classList.remove('show');
+    });
+    
+    // Set language via API
+    function setLanguage(langCode) {
+      fetch('/api/set-language', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: langCode })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.reload();
+        }
+      })
+      .catch(err => console.error('Language switch failed:', err));
+    }
+  </script>
+
 </body>
+
 </html>
