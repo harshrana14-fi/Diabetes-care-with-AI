@@ -1,3 +1,4 @@
+
 # Diabetes Care Home
 
 A comprehensive web-based platform for diabetes risk assessment, health data visualization, and AI-powered health assistance.
@@ -150,6 +151,7 @@ A simple discussion platform where users can:
 | Render | Cloud hosting platform |
 | Gunicorn | Production-grade WSGI server |
 | python-dotenv | Environment variable management |
+| Docker | Containerization |
 
 ---
 
@@ -170,7 +172,27 @@ python --version
 pip --version
 
 ```
+- **Python 3.8 or higher**
+  ```bash
+  # Check Python version
+  python --version
 
+```
+
+* **pip package manager**
+```bash
+# Check pip version
+pip --version
+
+```
+
+
+* **Git**
+```bash
+# Check Git version
+git --version
+
+```
 
 * **Git**
 ```bash
@@ -188,12 +210,25 @@ git --version
 
 
 
-### Installation
+* **Docker Desktop** (Optional, for containerized setup)
+* Required if you plan to run the application using Docker.
+
+
+* **Google Gemini API Key** — Required for the chatbot feature
+* Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+* Sign in with your Google account
+* Click "Create API Key"
+* Copy and save the key securely
+
+
+
+### Installation (Manual Method)
 
 #### Step 1: Clone the Repository
 
 ```bash
 # Clone via HTTPS
+git clone [https://github.com/your-username/diabetes-care-home.git](https://github.com/your-username/diabetes-care-home.git)
 git clone [https://github.com/your-username/diabetes-care-home.git](https://github.com/your-username/diabetes-care-home.git)
 
 # Or clone via SSH
@@ -201,6 +236,7 @@ git clone git@github.com:your-username/diabetes-care-home.git
 
 # Navigate to project directory
 cd diabetes-care-home
+
 
 ```
 
@@ -210,25 +246,31 @@ Creating a virtual environment isolates project dependencies from your system Py
 
 **Windows (Command Prompt):**
 
+
 ```cmd
 python -m venv venv
 venv\Scripts\activate
+
 
 ```
 
 **Windows (PowerShell):**
 
+
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
+
 
 ```
 
 **macOS / Linux:**
 
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
+
 
 ```
 
@@ -243,9 +285,18 @@ pip install --upgrade pip
 # Install all required packages
 pip install -r requirements.txt
 
+
 ```
 
 This installs the following packages:
+
+* flask, flask-cors
+* numpy, pandas
+* matplotlib, seaborn, plotly
+* scikit-learn
+* python-dotenv
+* google-generativeai
+* gunicorn
 
 * flask, flask-cors
 * numpy, pandas
@@ -261,29 +312,37 @@ Create a `.env` file in the project root directory:
 
 **Windows (Command Prompt):**
 
+
 ```cmd
 echo GEMINI_API_KEY=your_api_key_here > .env
+
 
 ```
 
 **Windows (PowerShell):**
 
+
 ```powershell
 "GEMINI_API_KEY=your_api_key_here" | Out-File -FilePath .env -Encoding utf8
+
 
 ```
 
 **macOS / Linux:**
 
+
 ```bash
 echo "GEMINI_API_KEY=your_api_key_here" > .env
+
 
 ```
 
 Or manually create the file with the following content:
 
+
 ```env
 GEMINI_API_KEY=your_actual_gemini_api_key
+
 
 ```
 
@@ -297,7 +356,12 @@ Ensure the following pre-trained model files exist in the project root:
 * `scaler.pkl` — Feature scaler for input normalization
 * `diabetes.csv` — Dataset for visualization features
 
+* `diabetes_model.pkl` — Trained classification model
+* `scaler.pkl` — Feature scaler for input normalization
+* `diabetes.csv` — Dataset for visualization features
+
 If missing, you can retrain the model using the provided Jupyter notebook:
+
 
 ```bash
 # Install Jupyter if not available
@@ -306,21 +370,26 @@ pip install jupyter
 # Launch Jupyter and run train.ipynb
 jupyter notebook train.ipynb
 
+
 ```
 
 #### Step 6: Run the Application
 
 **Development Mode:**
 
+
 ```bash
 python app.py
+
 
 ```
 
 **Production Mode (using Gunicorn):**
 
+
 ```bash
 gunicorn app:app --bind 0.0.0.0:5000
+
 
 ```
 
@@ -328,12 +397,31 @@ gunicorn app:app --bind 0.0.0.0:5000
 
 Open your web browser and navigate to:
 
+
 ```
 http://localhost:5000
+
 
 ```
 
 You should see the Diabetes Care Home landing page.
+
+### 🐳 Installation (Docker Method)
+
+If you prefer to run the application in a consistent containerized environment, follow these steps instead of the manual installation.
+
+1. **Prerequisite:** Ensure **Docker Desktop** is installed and running on your machine.
+2. **Configure Env:** Create the `.env` file as described in **Step 4** above.
+3. **Run:** Open your terminal in the project root and run:
+```bash
+docker-compose up --build
+
+```
+
+
+4. **Access:** Open your browser to `http://localhost:5000`.
+
+To stop the container, press `Ctrl+C` in the terminal.
 
 ---
 
@@ -355,6 +443,8 @@ diabetes-care-home/
 ├── train.ipynb                 # Jupyter notebook for model training
 │
 ├── requirements.txt            # Python package dependencies
+├── Dockerfile                  # Docker build instructions
+├── docker-compose.yml          # Container orchestration
 ├── .env                        # Environment variables (not in repo)
 ├── .gitignore                  # Git ignore rules
 │
@@ -369,6 +459,7 @@ diabetes-care-home/
     ├── life.html               # Lifestyle tips (route: /life)
     └── forum.html              # Community forum (route: /forum)
 
+
 ```
 
 ---
@@ -378,6 +469,7 @@ diabetes-care-home/
 ### Web Routes
 
 | Method | Endpoint | Description |
+| --- | --- | --- |
 | --- | --- | --- |
 | GET | `/` | Landing page |
 | GET | `/index` | Diabetes prediction form |
@@ -391,6 +483,7 @@ diabetes-care-home/
 
 | Method | Endpoint | Description | Request Body | Response |
 | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | POST | `/generate` | Send message to AI chatbot | `{"message": "your question"}` | `{"reply": "AI response"}` |
 | GET | `/api/posts` | Retrieve all forum posts | — | Array of post objects |
 | POST | `/api/posts` | Create new forum post | `{"content": "post text"}` | Created post object |
@@ -399,26 +492,32 @@ diabetes-care-home/
 
 **Chat with AI Assistant:**
 
+
 ```bash
 curl -X POST http://localhost:5000/generate \
   -H "Content-Type: application/json" \
   -d '{"message": "What are the symptoms of diabetes?"}'
 
+
 ```
 
 **Create Forum Post:**
+
 
 ```bash
 curl -X POST http://localhost:5000/api/posts \
   -H "Content-Type: application/json" \
   -d '{"content": "Hello, this is my first post!"}'
 
+
 ```
 
 **Get All Forum Posts:**
 
+
 ```bash
 curl http://localhost:5000/api/posts
+
 
 ```
 
@@ -429,11 +528,13 @@ curl http://localhost:5000/api/posts
 We welcome contributions from developers of all skill levels.
 
 Follow the Code Of Conduct: [CODE_OF_CONDUCT.md](https://www.google.com/search?q=CODE_OF_CONDUCT.md)
+Follow the Code Of Conduct: [CODE_OF_CONDUCT.md](https://www.google.com/search?q=CODE_OF_CONDUCT.md)
 
 ---
 
 ## License
 
+This project is open source and available under the [MIT License](https://www.google.com/search?q=LICENSE).
 This project is open source and available under the [MIT License](https://www.google.com/search?q=LICENSE).
 
 ```
@@ -459,6 +560,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
 ```
 
 ---
@@ -475,10 +577,15 @@ SOFTWARE.
 * [Google Gemini](https://deepmind.google/technologies/gemini/) — AI chatbot capabilities
 * [Flask](https://flask.palletsprojects.com/) — Web framework
 * [Tailwind CSS](https://tailwindcss.com/) — UI styling
+* [Pima Indians Diabetes Dataset](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database) — UCI Machine Learning Repository
+* [Google Gemini](https://deepmind.google/technologies/gemini/) — AI chatbot capabilities
+* [Flask](https://flask.palletsprojects.com/) — Web framework
+* [Tailwind CSS](https://tailwindcss.com/) — UI styling
 
 ---
 
 <p align="center">
+<strong>Making diabetes care smarter and more accessible.</strong>
 <strong>Making diabetes care smarter and more accessible.</strong>
 </p>
 
