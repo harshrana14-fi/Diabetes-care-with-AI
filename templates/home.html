@@ -58,7 +58,7 @@
 
 .navbar {
   background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-  padding: 0.8rem 2rem;
+  padding: 12px 24px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -183,7 +183,61 @@
   .nav-menu {
     display: none; /* In a real PR, you'd add a hamburger menu toggle here */
   }
+  
 }
+@media (max-width: 480px) {
+  .navbar {
+    padding: 14px 10px; 
+  }
+  
+  .nav-logo {
+    gap: 0px;
+  }
+  
+  .nav-utils {
+    gap: 6px; 
+  }
+  
+  .nav-menu {
+    display: none;
+  }
+  
+  .logo-text {
+    font-size: 20px; 
+  }
+  
+  .btn-primary {
+    font-size: 14px; 
+    padding: 4px 8px;
+  }
+  
+  .lang-selector {
+    padding: 2px;
+  }
+  
+  .lang-selector select {
+    font-size: 12px;
+  }
+}
+@media (max-width: 375px) {
+  .navbar {
+    padding: 8px 6px; 
+  }
+   .logo-text {
+    font-size: 16px; 
+  }
+    .btn-primary {
+    font-size: 12px; 
+    padding: 4px 6px;
+  }
+    .nav-utils {
+    gap: 4px; 
+  }
+   .lang-selector select {
+    font-size: 10px;
+  }
+}
+
   </style>
 </head>
 
