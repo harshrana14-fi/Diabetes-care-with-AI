@@ -5,6 +5,7 @@ flask-babel
 flask-sqlalchemy
 gunicorn
 python-dotenv
+joblib
 
 numpy
 pandas

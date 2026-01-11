@@ -6,9 +6,10 @@ import pickle
 import re
 import sys
 import threading
+import joblib
 import json
 from datetime import datetime, timezone
-
+from config import Config
 # --- External Libraries ---
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,13 +24,15 @@ from dotenv import load_dotenv
 
 # --- Database & New AI SDK Imports ---
 from models import db, Post  # Feature #113: Database Model
-from google import genai     # Fix #112: New Google GenAI SDK
+# from google import genai     # Fix #112: New Google GenAI SDK
+import google.generativeai as genai
+
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-
+app.config.from_object(Config)
 # --- Database Configuration (Feature #113) ---
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///forum.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -135,15 +138,20 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s: %(message)s')
 
 # --- Load ML Model and Scaler ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "models", "diabetes_model.pkl")
+SCALER_PATH = os.path.join(BASE_DIR, "models", "scaler.pkl")
 try:
-    model = pickle.load(open('diabetes_model.pkl', 'rb'))
+    model = joblib.load(MODEL_PATH)
+    print(MODEL_PATH)
+    print(os.path.exists(MODEL_PATH))
     logging.info("Diabetes model loaded successfully.")
 except Exception as e:
     logging.error(f"Model load error: {e}")
     model = None
 
 try:
-    scaler = pickle.load(open('scaler.pkl', 'rb'))
+    scaler = joblib.load(SCALER_PATH)
     logging.info("Scaler loaded successfully.")
 except Exception as e:
     logging.error(f"Scaler load error: {e}")
@@ -158,7 +166,9 @@ except Exception as e:
 
 # --- Gemini AI Client Initialization (Fix #112) ---
 try:
-    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    if not app.config["GEMINI_API_KEY"]:
+          raise RuntimeError("GEMINI_API_KEY not set")
+    client = genai.Client(api_key = app.config["GEMINI_API_KEY"])
 except Exception as e:
     logging.error(f"Failed to initialize Gemini Client: {e}")
     client = None
@@ -202,6 +212,8 @@ def predict():
              return render_template('index.html', prediction_text=_("Error: Input values cannot be negative."))
 
         if scaler is None or model is None:
+            print(scaler)
+            print(model)
             return render_template('index.html', prediction_text=_("Model not available."))
 
         final_input = scaler.transform([features])
@@ -1032,4 +1044,4 @@ def mark_notifications_read(user_id):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
