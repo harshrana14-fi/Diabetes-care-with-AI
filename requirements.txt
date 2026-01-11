@@ -1,6 +1,8 @@
 flask
+gunicorn
 scikit-learn
 numpy
 pandas
-gunicorn
 google-generativeai
+python-dotenv
+matplotlib
